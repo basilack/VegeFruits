@@ -1,0 +1,203 @@
+<style>
+    .order-form .container {
+    color: #4c4c4c;
+    padding: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, .1);
+}
+
+.order-form-label {
+    margin: 8px 0 0 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.order-form-input {
+    width: 100%;
+    padding: 8px 8px;
+    border-width: 1px !important;
+    border-style: solid !important;
+    border-radius: 3px !important;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+    font-weight: normal;
+    font-style: normal;
+    line-height: 1.2em;
+    background-color: transparent;
+    border-color: #cccccc;
+}
+
+.btn-submit:hover {
+    background-color: #090909 !important;
+}
+</style>
+
+<section class="order-form my-4 mx-4">
+
+  <div class="container pt-4 pb-5">
+<form id="checkout-form">
+
+    <div class="row">
+      <div class="col-12">
+        <h3>Address</h3>
+     
+        <hr class="mt-1">
+      </div>
+      <div class="col-6">
+
+        <div class="row mx-4">
+          <div class="col-12 mb-2">
+            <label class="order-form-label">Name</label>
+          </div>
+          <div class="col-12 col-sm-6">
+            <input type="text" class="order-form-input" name="fname" required placeholder="First">
+          </div>
+          <div class="col-12 col-sm-6 mt-2 mt-sm-0">
+            <input type="text" class="order-form-input" name="lname" placeholder="Last">
+          </div>
+        </div>
+
+        <div class="row mt-3 mx-4">
+          <div class="col-12">
+            <label class="order-form-label">Address</label>
+          </div>
+          <div class="col-12">
+            <input type="text" class="order-form-input" name="address" required placeholder="Street Address" >
+          </div>
+          <div class="col-12 col-sm-6 mt-2 pr-sm-2">
+            <input type="text" class="order-form-input" name="city" required placeholder="City">
+          </div>
+          <div class="col-12 col-sm-6 mt-2 pl-sm-0">
+            <input type="text" class="order-form-input" name="state" required placeholder="State">
+          </div>
+          <div class="col-12 col-sm-6 mt-2 pr-sm-2">
+            <input type="number" class="order-form-input" required name="pincode" placeholder="Postal / Zip Code">
+          </div>
+          <div class="col-12 col-sm-6 mt-2 pl-sm-0">
+            <input type="text" class="order-form-input" name="country" required placeholder="Country">
+          </div>
+          <div class="col-12">
+            <label class="order-form-label">Contact Number</label>
+          </div>
+          <div class="col-12 col-sm-6 mt-2 pr-sm-2">
+            <input type="number" class="order-form-input" required name="mobile" placeholder="Mobile">
+          </div>
+            </div>
+            <input type="hidden" name="userId" value="{{user._id}}">
+         {{!-- <div class="row mt-3">
+          <div class="col-12">
+            <button type="button" id="btnSubmit" class="btn btn-dark d-block mx-auto btn-submit btn-sm">Submit</button>
+          </div>
+        </div> --}}
+
+      </div>
+      <div class="col-6">
+         <div class="card ml-5 mt-5" style="width: 20rem;">
+            <div class="card-body">
+              <h5 class="card-title">Total Amout : {{total}} Dhs</h5>
+              <hr/>
+              <p class="card-text">Pyment Method :</p>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="payment-method" id="exampleRadios1" value="COD" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                  COD
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="payment-method" id="exampleRadios1" value="Online" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                 Online Pyment
+                </label>
+              </div>
+              <br>
+              <button type="submit" class="btn btn-primary btn-sm" style="float: right;">Checkout</button>
+            </div>
+          </div>
+      </div>
+    </div>
+    </form>
+  </div>
+</section>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+
+  $("#checkout-form").submit((e)=>{
+    
+    e.preventDefault()
+    $.ajax({
+
+      url:'/place-order',
+      method:'post',
+      data:$('#checkout-form').serialize(),          // serialize is used to pass all the data from the form 
+      success:(response)=>{
+       if(response.codSuccess){
+         location.href = '/order-success'
+       }
+       else{
+         razorpayPayment(response)
+       }
+      }
+    })
+  })
+
+
+function razorpayPayment(order)
+    {
+      var options = {
+        "key": "rzp_test_3SsX0g2zs6K23A", // Enter the Key ID generated from the Dashboard
+        "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+        "currency": "INR",
+        "name": "VegeFruits",
+        "description": "Test Transaction",
+        "image": "https://example.com/your_logo",
+        "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+        "handler": function (response){
+      
+            verifyPayment(response,order)
+        },
+        "prefill": {
+            "name": "Gaurav Kumar",
+            "email": "gaurav.kumar@example.com",
+            "contact": "9999999999"
+        },
+        "notes": {
+            "address": "Razorpay Corporate Office"
+        },
+        "theme": {
+            "color": "#3399cc"
+        }
+    };
+
+    var rzp1 = new Razorpay(options);
+    rzp1.open();
+    }
+
+function verifyPayment(payment,order)
+{
+  $.ajax({
+    url:'/verify-payment',
+    data:{
+      payment,
+      order
+    },
+    method:"post",
+    success:(response)=>{
+      if(response.status){
+        location.href = '/order-success'
+      }
+      else{
+        alert("payment failed")
+      }
+    }
+  })
+}
+
+</script>
+
+
+
+        
+       
+      
+      
+

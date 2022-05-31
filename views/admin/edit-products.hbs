@@ -1,0 +1,44 @@
+<section>
+  <div class="container mt-5">
+      <h2>Edit Products</h2>
+<form action="/admin/edit-products/{{product._id}}" method="post" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="formGroupExampleInput">Barcode</label>
+    <input type="text" class="form-control col-md-6" name="Barcode" value="{{product.Barcode}}" id="formGroupExampleInput" placeholder="Barcode">
+  </div>  
+  
+  <div class="form-group">
+    <label for="formGroupExampleInput">Name</label>
+    <input type="text" class="form-control col-md-6" name="name" value="{{product.name}}" id="formGroupExampleInput" placeholder="Name">
+  </div>
+   <div class="form-group">
+    <label for="formGroupExampleInput2">Price</label>
+    <input type="number" class="form-control col-md-6" name="price" min="0"  step="any" value="{{product.price}}" id="formGroupExampleInput2" placeholder="price">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Category</label>
+    <input type="text" class="form-control col-md-6" name="category" value="{{product.category}}" id="formGroupExampleInput2" placeholder="Category">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Description</label>
+    <textarea class="form-control col-md-6" name="description" id="exampleFormControlTextarea1" rows="3">{{product.description}}</textarea>
+  </div>
+  <form>
+  <div class="form-group">
+    <label for="exampleFormControlFile1">Image</label>
+    <img src="/product-images/{{product._id}}.jpg" alt="" class="image" style="width: 100px; height:auto;" id="img">
+    <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1" onchange="viewImage(event)">
+  </div>
+   <button type="submit" class="btn btn-primary">Update</button>
+</form>
+</form>
+</div>
+</section>
+
+
+<script>
+  function viewImage(event)
+  {
+    document.getElementById('img').src = URL.createObjectURL(event.target.files[0])
+  }
+</script>

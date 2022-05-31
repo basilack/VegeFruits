@@ -1,0 +1,42 @@
+<section>
+  <div class="container">
+    <br>
+    <h3>Hello Admin !</h3>
+    <div class="row float-right mb-4">
+     <a href="/admin/add-products" class="btn btn-success btn-sm">Add Products</a>
+    </div>
+    <div class="mt-5">
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">No.</th>
+      <th scope="col">Barcode</th>
+      <th scope="col">Name</th>
+      <th scope="col">Price</th>
+      <th scope="col">Category</th>
+      <th scope="col">Description</th>
+      <th scope="col">Image</th>
+       <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each products}}
+    <tr>
+      <th scope="row">1</th>
+      <td>{{this.Barcode}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.price}} Dhs</td>
+      <td>{{this.category}}</td>
+      <td>{{this.description}}</td>
+       <td><img src="/product-images/{{this._id}}.jpg" style="width:50px;"  alt="" class="image"></td>
+       <td>
+         <a href="/admin/editProducts/{{this._id}}" title="Edit" class="btn btn-primary btn-sm"> <i class='fas fa-edit' style='font-size:14px'></i></a>
+         <a href="/admin/deleteProducts/{{this._id}}" title="Delete" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure to delete {{this.name}}')"><i class="fas fa-trash"></i></a>
+       </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+</div>
+</div>
+</section>

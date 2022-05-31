@@ -1,0 +1,35 @@
+<section>
+  <div class="container mt-5">
+      <h2>Add Products</h2>
+<form action="/admin/add-products" method="post" enctype="multipart/form-data">
+ <div class="form-group">
+    <label for="formGroupExampleInput">Barcode</label>
+    <input type="text" class="form-control col-md-6" name="Barcode" id="formGroupExampleInput" placeholder="Barcode">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput">Name</label>
+    <input type="text" class="form-control col-md-6" name="name" id="formGroupExampleInput" placeholder="Product Name">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Price</label>
+    <input type="number" step=".01" class="form-control col-md-6" name="price" id="formGroupExampleInput2" placeholder="price">
+  </div>
+  <div class="form-group">
+    <label for="formGroupExampleInput2">Category</label>
+    <input type="text" class="form-control col-md-6" name="category" id="formGroupExampleInput2" placeholder="Category">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1">Description</label>
+    <textarea class="form-control col-md-6" name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
+  </div>
+  <form>
+  <div class="form-group">
+    <label for="exampleFormControlFile1">Image</label>
+    <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
+  </div>
+  <input type="hidden" name="IsDeleted" value="0">
+   <button type="submit" class="btn btn-primary">Add</button>
+</form>
+</form>
+</div>
+</section>
